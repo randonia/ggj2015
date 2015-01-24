@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mMoveTweenDuration: .5
   GO_Perception: {fileID: 100000}
-  mAttackDamage: 0
+  mAttackDamage: 2
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
@@ -12,6 +13,8 @@ public class UnitController : MonoBehaviour
         Dead
     }
 
+    public GameObject GO_Perception;
+
     public float mMoveTweenDuration = 0.25f;
     protected bool mMoving = false;
 
@@ -20,14 +23,15 @@ public class UnitController : MonoBehaviour
     protected const int kMaxHealth = 10;
     protected int mHealth = kMaxHealth;
 
-    public int Health
+    public Single Health
     {
-        get { return mHealth; }
+        get { return (Single)mHealth / kMaxHealth; }
     }
 
     // Use this for initialization
     private void Start()
     {
+        mHealth = kMaxHealth;
     }
 
     // Update is called once per frame
@@ -63,6 +67,16 @@ public class UnitController : MonoBehaviour
         if (!mMoving)
         {
             MoveTo((int)dir.x, (int)dir.y);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        mHealth -= damage;
+        if (mHealth <= 0)
+        {
+            // Die
+            mState = UnitState.Dieing;
         }
     }
 

@@ -10,6 +10,8 @@ public class PerceptionController : MonoBehaviour
     public PerceptionEnter mPerceptionEnterCallback;
     public PerceptionExit mPerceptionExitCallback;
 
+    public GameObject Parent { get { return transform.parent.gameObject; } }
+
     // Use this for initialization
     private void Start()
     {
@@ -22,11 +24,17 @@ public class PerceptionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        mPerceptionEnterCallback(other);
+        if (mPerceptionEnterCallback != null)
+        {
+            mPerceptionEnterCallback(other);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        mPerceptionExitCallback(other);
+        if (mPerceptionExitCallback != null)
+        {
+            mPerceptionExitCallback(other);
+        }
     }
 }

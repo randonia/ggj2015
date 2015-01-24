@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyController : UnitController
 {
-    public GameObject GO_Perception;
     public int mAttackDamage;
 
     private GameObject mTarget;
@@ -19,7 +18,6 @@ public class EnemyController : UnitController
     // Use this for initialization
     private void Start()
     {
-        mHealth = kMaxHealth;
         PerceptionController pc = GO_Perception.GetComponent<PerceptionController>();
         pc.mPerceptionEnterCallback = PerceptionEnter;
         pc.mPerceptionExitCallback = PerceptionExit;
@@ -103,7 +101,15 @@ public class EnemyController : UnitController
     {
         if (mLastAttack + kAttackCooldown < Time.time)
         {
-            Debug.Log("Do attack");
+            PerceptionController pc = target.GetComponent<PerceptionController>();
+            if (pc != null)
+            {
+                UnitController uc = pc.Parent.GetComponent<UnitController>();
+                if (uc != null)
+                {
+                    uc.TakeDamage(mAttackDamage);
+                }
+            }
             mLastAttack = Time.time;
         }
     }

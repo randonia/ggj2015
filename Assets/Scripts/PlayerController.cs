@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : UnitController
@@ -16,9 +17,9 @@ public class PlayerController : UnitController
     private int mMana;
     private int mStamina;
 
-    public int Mana { get { return mMana; } }
+    public Single Mana { get { return (Single)mMana / kMaxMana; } }
 
-    public int Stamina { get { return mStamina; } }
+    public Single Stamina { get { return (Single)mStamina / kMaxStamina; } }
 
     #endregion Mana and Stamina properties
 
