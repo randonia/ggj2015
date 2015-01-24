@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-
     protected enum UnitState
     {
         Idle,
@@ -27,13 +26,12 @@ public class UnitController : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (mHealth <= 0)
         {
@@ -41,9 +39,8 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    void DoDeath()
+    private void DoDeath()
     {
-
     }
 
     protected void MoveTo(int xDir, int yDir)

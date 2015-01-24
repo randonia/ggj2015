@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class EnemyController : UnitController {
+public class EnemyController : UnitController
+{
     public GameObject GO_Perception;
     public int mAttackDamage;
 
@@ -11,41 +12,47 @@ public class EnemyController : UnitController {
     /// How long the enemy tracks the target until it gives up
     /// </summary>
     private const float kFollowTimer = 2.0f;
+
     private const float kAttackCooldown = 1.5f;
     private float mLastAttack;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    private void Start()
+    {
         mHealth = kMaxHealth;
         PerceptionController pc = GO_Perception.GetComponent<PerceptionController>();
         pc.mPerceptionEnterCallback = PerceptionEnter;
         pc.mPerceptionExitCallback = PerceptionExit;
-	}
+    }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    private void Update()
+    {
         switch (mState)
         {
             case UnitState.Attacking:
                 DoAttack();
                 break;
+
             case UnitState.Dead:
                 break;
+
             case UnitState.Dieing:
                 break;
+
             case UnitState.Idle:
                 DoIdle();
                 break;
+
             case UnitState.Moving:
                 break;
         }
-	}
+    }
 
     #region StateActions
 
     private void DoIdle()
     {
-
     }
 
     private void DoAttack()
@@ -71,9 +78,11 @@ public class EnemyController : UnitController {
                 else
                 {
                     x = 0;
-                    y = 1 * ((dist.y < 0)?-1:1);
+                    y = 1 * ((dist.y < 0) ? -1 : 1);
                 }
-            } else if(absX > absY) {
+            }
+            else if (absX > absY)
+            {
                 x = 1;
                 y = 0;
             }
@@ -88,7 +97,7 @@ public class EnemyController : UnitController {
         }
     }
 
-    #endregion
+    #endregion StateActions
 
     private void AttackTarget(GameObject target)
     {
@@ -99,7 +108,7 @@ public class EnemyController : UnitController {
         }
     }
 
-    void PerceptionEnter(Collider2D other)
+    private void PerceptionEnter(Collider2D other)
     {
         if (other.tag.Equals("Player"))
         {
@@ -109,7 +118,7 @@ public class EnemyController : UnitController {
         }
     }
 
-    void PerceptionExit(Collider2D other)
+    private void PerceptionExit(Collider2D other)
     {
         if (other.tag.Equals("Player"))
         {
@@ -117,7 +126,7 @@ public class EnemyController : UnitController {
         }
     }
 
-    void ClearFollowing()
+    private void ClearFollowing()
     {
         mTarget = null;
         mState = UnitState.Idle;
