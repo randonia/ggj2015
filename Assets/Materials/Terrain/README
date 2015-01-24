@@ -1,0 +1,9 @@
+Terrain is going to be in the following format:
+
+name_NSEW
+
+name - The base terrain (grass)  
+NSEW - The connections, 0/1, to that direction.
+
+For example:  
+grass_1000 - Has only a connection to the north
