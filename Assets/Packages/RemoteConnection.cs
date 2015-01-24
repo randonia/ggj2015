@@ -27,9 +27,6 @@ public class RemoteConnection : MonoBehaviour
 	DataReceiver    m_dataReceiver;
 	WebCamStreamer  m_webCamStreamer;
 
-	private int screenWidth;
-	private int screenHeight;
-
 
 	void Start()
 	{

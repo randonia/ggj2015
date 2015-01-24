@@ -28,6 +28,7 @@ public class WorldController : MonoBehaviour {
             for (int y = (int)-worldSize.y; y < worldSize.y; ++y)
             {
                 GameObject newTile = GameObject.Instantiate(PREFAB_TILE1) as GameObject;
+                newTile.transform.parent = TileContainer.transform;
                 newTile.transform.position = new Vector3(x, y, GLOBAL_Z);
             }
         }
