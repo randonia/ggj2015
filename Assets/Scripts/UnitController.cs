@@ -12,7 +12,7 @@ public class UnitController : MonoBehaviour {
         Dead
     }
 
-    protected float mTweenDuration = 0.25f;
+    public float mMoveTweenDuration = 0.25f;
     protected bool mMoving = false;
 
     protected UnitState mState = UnitState.Idle;
@@ -40,14 +40,25 @@ public class UnitController : MonoBehaviour {
 
     protected void MoveTo(int xDir, int yDir)
     {
-        mMoving = true;
-        iTween.MoveTo(gameObject, iTween.Hash(
-            "x", transform.position.x + xDir,
-            "y", transform.position.y + yDir,
-            "time", mTweenDuration,
-            "oncomplete", "ClearMoveFlag",
-            "easetype", "linear")
-            );
+        if (!mMoving)
+        {
+            mMoving = true;
+            iTween.MoveTo(gameObject, iTween.Hash(
+                "x", transform.position.x + xDir,
+                "y", transform.position.y + yDir,
+                "time", mMoveTweenDuration,
+                "oncomplete", "ClearMoveFlag",
+                "easetype", "linear")
+                );
+        }
+    }
+
+    protected void MoveTo(Vector2 dir)
+    {
+        if (!mMoving)
+        {
+            MoveTo((int)dir.x, (int)dir.y);
+        }
     }
 
     private void ClearMoveFlag()
