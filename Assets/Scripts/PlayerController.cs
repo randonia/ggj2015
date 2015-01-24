@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
-
-    private const float kTweenDuration = 0.25f;
-    private bool mMoving = false;
+public class PlayerController : UnitController {
 
 	// Use this for initialization
-	void Start () {
-	
-	}
+	void Start () {	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,44 +13,28 @@ public class PlayerController : MonoBehaviour {
 
     void doMovement()
     {
-        if (!mMoving){
-            if (Input.GetKeyDown(KeyCode.A))
+        if (!mMoving)
+        {
+            if (Input.GetKey(KeyCode.A))
             {
                 MoveTo(-1, 0);
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKey(KeyCode.D))
             {
                 MoveTo(1, 0);
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
             {
                 MoveTo(0, 1);
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
                 MoveTo(0, -1);
                 return;
             }
         }
-    }
-
-    void MoveTo(int xDir, int yDir)
-    {
-        mMoving = true;
-        iTween.MoveTo(gameObject, iTween.Hash(
-            "x", transform.position.x + xDir,
-            "y", transform.position.y + yDir,
-            "time", kTweenDuration,
-            "oncomplete", "ClearMoveFlag",
-            "easetype", "linear")
-            );
-    }
-
-    void ClearMoveFlag()
-    {
-        mMoving = false;
     }
 }
