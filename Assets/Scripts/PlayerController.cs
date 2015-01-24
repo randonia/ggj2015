@@ -1,17 +1,42 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class PlayerController : UnitController {
+public class PlayerController : UnitController
+{
+    #region Consts
 
-	// Use this for initialization
-	void Start () {	}
-	
-	// Update is called once per frame
-	void Update () {
+    private new const int kMaxHealth = 10;
+    private const int kMaxMana = 10;
+    private const int kMaxStamina = 10;
+
+    #endregion Consts
+
+    #region Mana and Stamina properties
+
+    private int mMana;
+    private int mStamina;
+
+    public int Mana { get { return mMana; } }
+
+    public int Stamina { get { return mStamina; } }
+
+    #endregion Mana and Stamina properties
+
+    // Use this for initialization
+    private void Start()
+    {
+        mHealth = kMaxHealth;
+        mMana = kMaxMana;
+        mStamina = kMaxStamina;
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
         doMovement();
-	}
+    }
 
-    void doMovement()
+    private void doMovement()
     {
         if (!mMoving)
         {

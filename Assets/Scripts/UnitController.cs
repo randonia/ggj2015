@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitController : MonoBehaviour {
+public class UnitController : MonoBehaviour
+{
 
     protected enum UnitState
     {
@@ -20,18 +21,25 @@ public class UnitController : MonoBehaviour {
     protected const int kMaxHealth = 10;
     protected int mHealth = kMaxHealth;
 
-	// Use this for initialization
-	void Start () {
+    public int Health
+    {
+        get { return mHealth; }
+    }
 
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
 
     // Update is called once per frame
-	void Update () {
+    void Update()
+    {
         if (mHealth <= 0)
         {
             DoDeath();
         }
-	}
+    }
 
     void DoDeath()
     {
