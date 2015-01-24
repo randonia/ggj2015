@@ -15,3 +15,11 @@
 
 #Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# Custom ignores
+*.db
+*.psd
+*.dll
+# Ignore NGUI for copyrights
+*NGUI*
+web_release
