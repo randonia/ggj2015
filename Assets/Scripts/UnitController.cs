@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    public const int NORTH = 0;
+    public const int SOUTH = 1;
+    public const int EAST = 2;
+    public const int WEST = 3;
+
     protected enum UnitState
     {
         Idle,
@@ -14,11 +19,15 @@ public class UnitController : MonoBehaviour
     }
 
     public GameObject GO_Perception;
+    public GameObject[] GO_Combat;
 
     public float mMoveTweenDuration = 0.25f;
     protected bool mMoving = false;
 
     protected UnitState mState = UnitState.Idle;
+
+    protected const float kAttackCooldown = 1.5f;
+    protected float mLastAttack;
 
     protected const int kMaxHealth = 10;
     protected int mHealth = kMaxHealth;

@@ -11,8 +11,6 @@ public class PlayerController : UnitController
         Magic = 2
     }
 
-    public GameObject GO_UI_AttackMode;
-
     #region Consts
 
     private new const int kMaxHealth = 10;
@@ -22,6 +20,8 @@ public class PlayerController : UnitController
     #endregion Consts
 
     #region Combat Properties
+
+    private new const float kAttackCooldown = 0.25f;
 
     private int mMana;
     private int mStamina;
@@ -33,6 +33,8 @@ public class PlayerController : UnitController
 
     public int AttackModeIndex { get { return (int)mAttackMode; } }
 
+    private PerceptionController[] mPerceptions;
+
     #endregion Combat Properties
 
     // Use this for initialization
@@ -41,16 +43,57 @@ public class PlayerController : UnitController
         mHealth = kMaxHealth;
         mMana = kMaxMana;
         mStamina = kMaxStamina;
+        mPerceptions = new PerceptionController[4];
+        mPerceptions[NORTH] = GO_Combat[NORTH].GetComponent<PerceptionController>();
+        mPerceptions[SOUTH] = GO_Combat[SOUTH].GetComponent<PerceptionController>();
+        mPerceptions[EAST] = GO_Combat[EAST].GetComponent<PerceptionController>();
+        mPerceptions[WEST] = GO_Combat[WEST].GetComponent<PerceptionController>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        GetAttackModeInput();
         DoMovement();
+        DoAttackModeInput();
+        DoAttack();
     }
 
-    private void GetAttackModeInput()
+    #region StateUpdate methods
+
+    private void DoAttack()
+    {
+        GameObject target = null;
+        if (mLastAttack + kAttackCooldown < Time.time)
+        {
+            Vector2 attackDir = Vector2.zero;
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                target = mPerceptions[NORTH].CurrentTarget;
+                attackDir.Set(0, -1);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                target = mPerceptions[SOUTH].CurrentTarget;
+                attackDir.Set(0, 1);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                target = mPerceptions[EAST].CurrentTarget;
+                attackDir.Set(1, 0);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                target = mPerceptions[WEST].CurrentTarget;
+                attackDir.Set(-1, 0);
+            }
+            if (target != null)
+            {
+                Debug.DrawLine(transform.position, target.transform.position, Color.red);
+            }
+        }
+    }
+
+    private void DoAttackModeInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -92,4 +135,6 @@ public class PlayerController : UnitController
             }
         }
     }
+
+    #endregion StateUpdate methods
 }

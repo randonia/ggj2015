@@ -12,8 +12,10 @@ public class EnemyController : UnitController
     /// </summary>
     private const float kFollowTimer = 2.0f;
 
-    private const float kAttackCooldown = 1.5f;
-    private float mLastAttack;
+    /// <summary>
+    /// How far an enemy has to be to keep moving
+    /// </summary>
+    private const float kMovePerceptionThreshold = 1.5f;
 
     // Use this for initialization
     private void Start()
@@ -56,7 +58,8 @@ public class EnemyController : UnitController
     private void DoAttack()
     {
         Vector2 dist = mTarget.transform.position - transform.position;
-        if (dist.sqrMagnitude < 2.3f)
+        Debug.Log(dist.sqrMagnitude);
+        if (dist.sqrMagnitude < kMovePerceptionThreshold)
         {
             AttackTarget(mTarget);
         }
