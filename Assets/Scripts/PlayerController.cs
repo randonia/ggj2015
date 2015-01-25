@@ -34,6 +34,7 @@ public class PlayerController : UnitController
 
     private PerceptionController[] mPerceptions;
     private const int kRangedDamage = 2;
+    private const int kMagicDamage = 5;
     private const int kRangedStamina = 3;
     private const int kMagicMana = 4;
 
@@ -203,6 +204,8 @@ public class PlayerController : UnitController
             mMana >= kMagicMana &&
             mLastMagicAttack + kMagicCooldown <= Time.time)
         {
+            FireMagic(attackDir, kMagicDamage);
+            mMana -= kMagicMana;
         }
     }
 

@@ -2543,6 +2543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GO_Perception: {fileID: 1312887924}
   PREFAB_Arrow: {fileID: 100000, guid: d12d72457d3251f439bfe4d7b1e28a1d, type: 2}
+  PREFAB_Magic: {fileID: 100000, guid: 8641541a753cef04db66db67d728baf0, type: 2}
   GO_Combat:
   - {fileID: 815255879}
   - {fileID: 643303804}
@@ -3031,6 +3032,10 @@ Prefab:
     - target: {fileID: 400002, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
@@ -4897,6 +4902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GO_Perception: {fileID: 512662325}
   PREFAB_Arrow: {fileID: 0}
+  PREFAB_Magic: {fileID: 0}
   GO_Combat: []
   mMoveTweenDuration: .5
   mAttackDamage: 2
@@ -5061,6 +5067,10 @@ Prefab:
       propertyPath: PREFAB_Arrow
       value: 
       objectReference: {fileID: 100000, guid: d12d72457d3251f439bfe4d7b1e28a1d, type: 2}
+    - target: {fileID: 11400000, guid: 531a9fd43cf3f2544a4131d4d4bee254, type: 2}
+      propertyPath: PREFAB_Magic
+      value: 
+      objectReference: {fileID: 100000, guid: 8641541a753cef04db66db67d728baf0, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 531a9fd43cf3f2544a4131d4d4bee254, type: 2}
   m_RootGameObject: {fileID: 1155556002}

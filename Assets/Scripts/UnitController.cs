@@ -27,6 +27,7 @@ public class UnitController : MonoBehaviour
 
     public GameObject GO_Perception;
     public GameObject PREFAB_Arrow;
+    public GameObject PREFAB_Magic;
     public GameObject[] GO_Combat;
 
     public float mMoveTweenDuration = 0.25f;
@@ -102,6 +103,15 @@ public class UnitController : MonoBehaviour
         arrow.GetComponent<ProjectileController>().Direction = dir;
         arrow.GetComponent<ProjectileController>().Damage = damage;
         mLastRangedAttack = Time.time;
+    }
+
+    protected void FireMagic(Vector2 dir, int damage)
+    {
+        GameObject magicMissile = (GameObject)GameObject.Instantiate(PREFAB_Magic,
+         gameObject.transform.position, Quaternion.identity);
+        magicMissile.GetComponent<ProjectileController>().Direction = dir;
+        magicMissile.GetComponent<ProjectileController>().Damage = damage;
+        mLastMagicAttack = Time.time;
     }
 
     public void TakeDamage(int damage)
