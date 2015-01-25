@@ -113,7 +113,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    protected void FireArrow(Vector2 dir, int damage)
+    protected GameObject FireArrow(Vector2 dir, int damage)
     {
         GameObject arrow = (GameObject)GameObject.Instantiate(PREFAB_Arrow,
          gameObject.transform.position, Quaternion.identity);
@@ -121,9 +121,10 @@ public class UnitController : MonoBehaviour
         arrow.GetComponent<ProjectileController>().Damage = damage;
         arrow.GetComponent<ProjectileController>().Team = mTeam;
         mLastRangedAttack = Time.time;
+        return arrow;
     }
 
-    protected void FireMagic(Vector2 dir, int damage)
+    protected GameObject FireMagic(Vector2 dir, int damage)
     {
         GameObject magicMissile = (GameObject)GameObject.Instantiate(PREFAB_Magic,
          gameObject.transform.position, Quaternion.identity);
@@ -131,6 +132,7 @@ public class UnitController : MonoBehaviour
         magicMissile.GetComponent<ProjectileController>().Damage = damage;
         magicMissile.GetComponent<ProjectileController>().Team = mTeam;
         mLastMagicAttack = Time.time;
+        return magicMissile;
     }
 
     public void TakeDamage(int damage)

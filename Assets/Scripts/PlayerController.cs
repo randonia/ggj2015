@@ -179,7 +179,8 @@ public class PlayerController : UnitController
             mStamina >= kRangedStamina &&
             mLastRangedAttack + kRangeCooldown <= Time.time)
         {
-            FireArrow(attackDir, kRangedDamage);
+            GameObject arrow = FireArrow(attackDir, kRangedDamage);
+            Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), arrow.GetComponent<BoxCollider2D>());
             mStamina -= kRangedStamina;
         }
     }

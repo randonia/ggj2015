@@ -5,20 +5,20 @@ public class EnemyController : UnitController
 {
     public int mAttackDamage;
 
-    private GameObject mTarget;
+    protected GameObject mTarget;
 
     /// <summary>
     /// How long the enemy tracks the target until it gives up
     /// </summary>
-    private const float kFollowTimer = 2.0f;
+    protected const float kFollowTimer = 2.0f;
 
     /// <summary>
     /// How far an enemy has to be to keep moving
     /// </summary>
-    private const float kMovePerceptionThreshold = 1.5f;
+    public float kMovePerceptionThreshold = 1.5f;
 
     // Use this for initialization
-    private void Start()
+    protected void Start()
     {
         mTeam = UnitTeam.Enemy;
         PerceptionController pc = GO_Perception.GetComponent<PerceptionController>();
@@ -27,7 +27,7 @@ public class EnemyController : UnitController
     }
 
     // Update is called once per frame
-    private void Update()
+    protected void Update()
     {
         switch (mState)
         {
@@ -53,7 +53,7 @@ public class EnemyController : UnitController
     {
     }
 
-    private void DoAttack()
+    protected virtual void DoAttack()
     {
         Vector2 dist = mTarget.transform.position - transform.position;
         if (dist.sqrMagnitude < kMovePerceptionThreshold)
@@ -97,7 +97,7 @@ public class EnemyController : UnitController
 
     #endregion StateActions
 
-    private void AttackTarget(GameObject target)
+    protected virtual void AttackTarget(GameObject target)
     {
         if (mLastMeleeAttack + kMeleeCooldown < Time.time)
         {
