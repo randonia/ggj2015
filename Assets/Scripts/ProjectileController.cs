@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     public UnitController.UnitTeam Team;
-
+    public GameObject renderer;
     private int mDamage;
 
     public int Damage { get { return mDamage; } set { mDamage = value; } }
@@ -17,12 +17,15 @@ public class ProjectileController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        float rotAngle = Vector2.Angle(Vector2.right, mDir);
+
+        renderer.transform.Rotate(Vector3.forward, rotAngle * ((mDir.y != 0) ? mDir.y : 1));
     }
 
     // Update is called once per frame
     private void Update()
     {
-        transform.Translate(mDir.x * Time.deltaTime * mSpeed, mDir.y * Time.deltaTime * mSpeed, 0);
+        transform.Translate(mDir.x * mSpeed * Time.deltaTime, mDir.y * mSpeed * Time.deltaTime, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

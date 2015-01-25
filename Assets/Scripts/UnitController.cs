@@ -98,7 +98,7 @@ public class UnitController : MonoBehaviour
     protected void FireArrow(Vector2 dir, int damage)
     {
         GameObject arrow = (GameObject)GameObject.Instantiate(PREFAB_Arrow,
-            gameObject.transform.position, Quaternion.identity);
+         gameObject.transform.position, Quaternion.identity);
         arrow.GetComponent<ProjectileController>().Direction = dir;
         arrow.GetComponent<ProjectileController>().Damage = damage;
         mLastRangedAttack = Time.time;
