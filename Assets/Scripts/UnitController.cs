@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    #region Directions
+
+    /// <summary>
+    /// Make sure this is sync'd with WorldController
+    /// </summary>
+
     public const int NORTH = 0;
     public const int SOUTH = 1;
     public const int EAST = 2;
     public const int WEST = 3;
+
+    #endregion Directions
 
     public enum UnitTeam
     {

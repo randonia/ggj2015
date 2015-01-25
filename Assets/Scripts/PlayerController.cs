@@ -93,6 +93,14 @@ public class PlayerController : UnitController
 
     #endregion Combat Properties
 
+    #region Rendering Properties
+
+    public Sprite[] PlayerSprites;
+
+    public Sprite ActivePlayerSprite { get { return PlayerSprites[(int)mAttackMode]; } }
+
+    #endregion Rendering Properties
+
     // Use this for initialization
     private void Start()
     {
@@ -235,22 +243,34 @@ public class PlayerController : UnitController
         {
             if (Input.GetKey(KeyCode.A))
             {
-                MoveTo(-1, 0);
+                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, WEST))
+                {
+                    MoveTo(-1, 0);
+                }
                 return;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                MoveTo(1, 0);
+                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, EAST))
+                {
+                    MoveTo(1, 0);
+                }
                 return;
             }
             if (Input.GetKey(KeyCode.W))
             {
-                MoveTo(0, 1);
+                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, NORTH))
+                {
+                    MoveTo(0, 1);
+                }
                 return;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                MoveTo(0, -1);
+                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, SOUTH))
+                {
+                    MoveTo(0, -1);
+                }
                 return;
             }
         }
