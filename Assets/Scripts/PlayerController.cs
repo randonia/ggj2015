@@ -36,10 +36,9 @@ public class PlayerController : UnitController
     private const int kRangedStamina = 3;
     private const int kMagicMana = 4;
 
-    private new const float kMeleeCooldown = 0.5f;
-    private new const float kRangeCooldown = 3.0f;
-    private new const float kMagicCooldown = 2.0f;
-    // Per step regen
+    private new const float kMeleeCooldown = 0.2f;
+    private new const float kRangeCooldown = 2.0f;
+    private new const float kMagicCooldown = 5.0f;
 
     public bool isPaused = false;
 
@@ -89,7 +88,7 @@ public class PlayerController : UnitController
         }
     }
 
-    private const int kHealReqSteps = 5; // 1hp per 5steps
+    private const int kHealReqSteps = 8; // 1hp per 8steps
     private const int kHealStepRegen = 1;
 
     private const int kManaStepRegen = 1; // 1 mana per 2 steps
@@ -117,6 +116,31 @@ public class PlayerController : UnitController
     public Single Inro1_UI_Color { get { return mInroRecovered != null && (mInroRecovered[1]) ? 1 : UI_MissingInroAlpha; } }
 
     public Single Inro2_UI_Color { get { return mInroRecovered != null && (mInroRecovered[2]) ? 1 : UI_MissingInroAlpha; } }
+
+    private const int kCoolDownMax = 45;
+    private const int kCoolDownMin = 6;
+
+    public Single UI_Cooldown_indicator
+    {
+        get
+        {
+            float percentage = 1.0f;
+            switch (mAttackMode)
+            {
+                case AttackMode.Melee:
+                    percentage = (Time.time - mLastMeleeAttack) / kMeleeCooldown;
+                    break;
+                case AttackMode.Range:
+                    percentage = (Time.time - mLastRangedAttack) / kRangeCooldown;
+                    break;
+                case AttackMode.Magic:
+                    percentage = (Time.time - mLastMagicAttack) / kMagicCooldown;
+                    break;
+            }
+            percentage = Math.Min(percentage, 1.0f);
+            return percentage;
+        }
+    }
 
     #endregion Rendering Properties
 
@@ -351,7 +375,6 @@ public class PlayerController : UnitController
         HealStep();
         ManaStep();
         StamStep();
-        mLastMeleeAttack = float.MinValue;
     }
 
     #endregion StateUpdate methods
