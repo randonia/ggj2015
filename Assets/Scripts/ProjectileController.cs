@@ -7,6 +7,9 @@ public class ProjectileController : MonoBehaviour
     public GameObject spriteRenderer;
     private int mDamage;
 
+    private const float kLifespan = 2.0f;
+    private float mBirthTime;
+
     public int Damage { get { return mDamage; } set { mDamage = value; } }
 
     public float mSpeed = 1.0f;
@@ -18,13 +21,17 @@ public class ProjectileController : MonoBehaviour
     private void Start()
     {
         float rotAngle = Vector2.Angle(Vector2.right, mDir);
-
+        mBirthTime = Time.time;
         spriteRenderer.transform.Rotate(Vector3.forward, rotAngle * ((mDir.y != 0) ? mDir.y : 1));
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (mBirthTime + kLifespan < Time.time)
+        {
+            GameObject.Destroy(gameObject);
+        }
         transform.Translate(mDir.x * mSpeed * Time.deltaTime, mDir.y * mSpeed * Time.deltaTime, 0);
     }
 

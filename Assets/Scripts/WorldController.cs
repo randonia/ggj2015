@@ -29,6 +29,7 @@ public class WorldController : MonoBehaviour
     public Vector2 worldSize;
 
     public Sprite[] grass_basics;
+    private int[] random_rotations = new int[4] { 0, 90, 180, 270 };
 
     /// <summary>
     /// THE GRID. X,Y based. Make sure to round.
@@ -58,6 +59,10 @@ public class WorldController : MonoBehaviour
                 // Pick a random grass
                 Debug.Log("Random grass!");
             }
+            if (tile.name.Equals("grass_1111"))
+            {
+                tile.transform.Rotate(Vector3.forward, random_rotations[Random.Range(0, 4)]);
+            }
             THE_GRID[x].Add(y, tile);
         }
     }
@@ -79,7 +84,9 @@ public class WorldController : MonoBehaviour
             return false;
         }
         string currTileName = THE_GRID[tileX][tileY].name;
+        string nextTileName = null;
         int namePadding = currTileName.IndexOf("_") + 1;
+        int invertDir = -1;
         switch (dir)
         {
             case NORTH:
@@ -87,24 +94,32 @@ public class WorldController : MonoBehaviour
                 {
                     return false;
                 }
+                nextTileName = THE_GRID[tileX][tileY + 1].name;
+                invertDir = SOUTH;
                 break;
             case SOUTH:
                 if (!THE_GRID[tileX].ContainsKey(tileY - 1))
                 {
                     return false;
                 }
+                nextTileName = THE_GRID[tileX][tileY - 1].name;
+                invertDir = NORTH;
                 break;
             case EAST:
                 if (!THE_GRID.ContainsKey(tileX + 1) || !THE_GRID[tileX + 1].ContainsKey(tileY))
                 {
                     return false;
                 }
+                nextTileName = THE_GRID[tileX + 1][tileY].name;
+                invertDir = WEST;
                 break;
             case WEST:
                 if (!THE_GRID.ContainsKey(tileX - 1) || !THE_GRID[tileX - 1].ContainsKey(tileY))
                 {
                     return false;
                 }
+                nextTileName = THE_GRID[tileX - 1][tileY].name;
+                invertDir = EAST;
                 break;
             default:
                 return false;
@@ -113,6 +128,12 @@ public class WorldController : MonoBehaviour
         {
             return false;
         }
+        int nextNamePadding = nextTileName.IndexOf("_") + 1;
+        if (nextTileName[nextNamePadding + invertDir].Equals('1'))
+        {
+            return false;
+        }
+
         return true;
     }
 }

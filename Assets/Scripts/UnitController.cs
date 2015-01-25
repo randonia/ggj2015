@@ -78,7 +78,7 @@ public class UnitController : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
-    protected void MoveTo(int xDir, int yDir)
+    protected bool MoveTo(int xDir, int yDir)
     {
         if (CanMove(xDir, yDir))
         {
@@ -90,7 +90,9 @@ public class UnitController : MonoBehaviour
                 "oncomplete", "ClearMoveFlag",
                 "easetype", "linear")
                 );
+            return true;
         }
+        return false;
     }
 
     private bool CanMove(int xDir, int yDir)
