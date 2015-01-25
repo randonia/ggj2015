@@ -20,7 +20,7 @@ public class PlayerController : UnitController
 
     #region Combat Properties
 
-    private new const float kAttackCooldown = 0.25f;
+    private const float kAttackCooldown = 0.25f;
 
     private int mMana;
     private int mStamina;

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     public UnitController.UnitTeam Team;
-    public GameObject renderer;
+    public GameObject spriteRenderer;
     private int mDamage;
 
     public int Damage { get { return mDamage; } set { mDamage = value; } }
@@ -19,7 +19,7 @@ public class ProjectileController : MonoBehaviour
     {
         float rotAngle = Vector2.Angle(Vector2.right, mDir);
 
-        renderer.transform.Rotate(Vector3.forward, rotAngle * ((mDir.y != 0) ? mDir.y : 1));
+        spriteRenderer.transform.Rotate(Vector3.forward, rotAngle * ((mDir.y != 0) ? mDir.y : 1));
     }
 
     // Update is called once per frame

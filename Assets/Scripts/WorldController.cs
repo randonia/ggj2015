@@ -28,6 +28,8 @@ public class WorldController : MonoBehaviour
 
     public Vector2 worldSize;
 
+    public Sprite[] grass_basics;
+
     /// <summary>
     /// THE GRID. X,Y based. Make sure to round.
     /// </summary>
@@ -41,6 +43,7 @@ public class WorldController : MonoBehaviour
         {
             int x = (int)tile.transform.position.x;
             int y = (int)tile.transform.position.y;
+            tile.transform.position.Set(x, y, 0.5f);
             if (!THE_GRID.ContainsKey(x))
             {
                 THE_GRID.Add(x, new Dictionary<int, GameObject>());
@@ -49,6 +52,11 @@ public class WorldController : MonoBehaviour
             {
                 Debug.Log("Duplicate tile detected:" + x + "," + y);
                 Debug.DrawLine(tile.transform.position, Vector3.forward, Color.red, 15.0f);
+            }
+            if (tile.name.Equals("grass_0000"))
+            {
+                // Pick a random grass
+                Debug.Log("Random grass!");
             }
             THE_GRID[x].Add(y, tile);
         }

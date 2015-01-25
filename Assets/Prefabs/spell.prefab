@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Team: 0
-  renderer: {fileID: 100002}
+  spriteRenderer: {fileID: 100002}
   mSpeed: 5
 --- !u!212 &21200000
 SpriteRenderer:
