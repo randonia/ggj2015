@@ -43,13 +43,15 @@ public class PlayerController : UnitController
 
     public bool isPaused = false;
 
-    public bool isRunning { get { return !isPaused && mState != UnitState.Dead; } }
+    public bool isRunning { get { return !isPaused && mState != UnitState.Dead && mState != UnitState.Winning; } }
 
     public bool isMainMenu { get { return mState == UnitState.Menu; } }
 
     public bool isGameplay { get { return mState != UnitState.Menu; } }
 
     public bool isDead { get { return mState == UnitState.Dead; } }
+
+    public bool isWinning { get { return mState == UnitState.Winning; } }
 
     #region Step based regen
 
@@ -320,10 +322,28 @@ public class PlayerController : UnitController
             mInroRecovered[inro_Id] = true;
             GameObject.Destroy(other.gameObject);
         }
-        if (other.tag.Equals("Portal"))
+        if (other.tag.Equals("Portal") && haveAllInro())
         {
             other.GetComponent<EffectsController>().EmitEffect(EffectsController.EffectType.Portal);
+            mState = UnitState.Winning;
+            // Hackey disabling of everyone
+            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                enemy.GetComponent<UnitController>().State = UnitState.Menu;
+            }
         }
+    }
+
+    private bool haveAllInro()
+    {
+        foreach (bool b in mInroRecovered)
+        {
+            if (!b)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected override void RefreshStats()

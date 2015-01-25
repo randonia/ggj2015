@@ -31,7 +31,8 @@ public class UnitController : MonoBehaviour
         Attacking,
         Dieing,
         Dead,
-        Menu
+        Menu,
+        Winning
     }
 
     public UnitState State { get { return mState; } set { mState = value; } }
