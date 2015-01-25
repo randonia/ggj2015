@@ -119,12 +119,14 @@ public class EnemyController : UnitController
 
     private void PerceptionEnter(Collider2D other)
     {
-        if (other.tag.Equals("Player"))
-        {
-            CancelInvoke("ClearFollowing");
-            mTarget = other.gameObject;
-            mState = UnitState.Attacking;
-        }
+        if (mState.Equals(UnitState.Idle) || mState.Equals(UnitState.Attacking) ||
+            mState.Equals(UnitState.Moving))
+            if (other.tag.Equals("Player"))
+            {
+                CancelInvoke("ClearFollowing");
+                mTarget = other.gameObject;
+                mState = UnitState.Attacking;
+            }
     }
 
     private void PerceptionExit(Collider2D other)
@@ -138,6 +140,10 @@ public class EnemyController : UnitController
     private void ClearFollowing()
     {
         mTarget = null;
-        mState = UnitState.Idle;
+        if (mState.Equals(UnitState.Idle) || mState.Equals(UnitState.Attacking) ||
+            mState.Equals(UnitState.Moving))
+        {
+            mState = UnitState.Idle;
+        }
     }
 }

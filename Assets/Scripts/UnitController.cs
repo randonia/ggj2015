@@ -34,7 +34,7 @@ public class UnitController : MonoBehaviour
     protected bool mMoving = false;
 
     protected UnitState mState = UnitState.Idle;
-    protected UnitTeam mTeam = UnitTeam.Neutral;
+    public UnitTeam mTeam = UnitTeam.Neutral;
 
     public UnitTeam Team { get { return mTeam; } }
 
@@ -102,6 +102,7 @@ public class UnitController : MonoBehaviour
          gameObject.transform.position, Quaternion.identity);
         arrow.GetComponent<ProjectileController>().Direction = dir;
         arrow.GetComponent<ProjectileController>().Damage = damage;
+        arrow.GetComponent<ProjectileController>().Team = mTeam;
         mLastRangedAttack = Time.time;
     }
 
@@ -111,6 +112,7 @@ public class UnitController : MonoBehaviour
          gameObject.transform.position, Quaternion.identity);
         magicMissile.GetComponent<ProjectileController>().Direction = dir;
         magicMissile.GetComponent<ProjectileController>().Damage = damage;
+        magicMissile.GetComponent<ProjectileController>().Team = mTeam;
         mLastMagicAttack = Time.time;
     }
 

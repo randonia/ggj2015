@@ -2550,6 +2550,7 @@ MonoBehaviour:
   - {fileID: 551781750}
   - {fileID: 915838777}
   mMoveTweenDuration: .25
+  mTeam: 0
 --- !u!50 &1155556006
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -3036,6 +3037,10 @@ Prefab:
     - target: {fileID: 400000, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
+      propertyPath: mTeam
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69a0d89d37ee79b4faaf29ffb692bdd8, type: 2}
@@ -4905,6 +4910,7 @@ MonoBehaviour:
   PREFAB_Magic: {fileID: 0}
   GO_Combat: []
   mMoveTweenDuration: .5
+  mTeam: 2
   mAttackDamage: 2
 --- !u!50 &2049786183
 Rigidbody2D:
