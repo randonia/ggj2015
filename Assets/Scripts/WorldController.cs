@@ -52,12 +52,14 @@ public class WorldController : MonoBehaviour
             if (THE_GRID[x].ContainsKey(y))
             {
                 Debug.Log("Duplicate tile detected:" + x + "," + y);
-                Debug.DrawLine(tile.transform.position, Vector3.forward, Color.red, 15.0f);
+                Debug.DrawLine(tile.transform.position, Vector3.forward, Color.red, 25.0f);
+                tile.GetComponent<SpriteRenderer>().color = Color.red;
+                THE_GRID[x][y].GetComponent<SpriteRenderer>().color = Color.red;
+                continue;
             }
             if (tile.name.Equals("grass_0000"))
             {
-                // Pick a random grass
-                Debug.Log("Random grass!");
+                tile.GetComponent<SpriteRenderer>().sprite = grass_basics[Random.Range(0, grass_basics.Length)];
             }
             if (tile.name.Equals("grass_1111"))
             {
