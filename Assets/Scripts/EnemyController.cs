@@ -20,6 +20,7 @@ public class EnemyController : UnitController
     // Use this for initialization
     private void Start()
     {
+        mTeam = UnitTeam.Enemy;
         PerceptionController pc = GO_Perception.GetComponent<PerceptionController>();
         pc.mPerceptionEnterCallback = PerceptionEnter;
         pc.mPerceptionExitCallback = PerceptionExit;
@@ -58,7 +59,6 @@ public class EnemyController : UnitController
     private void DoAttack()
     {
         Vector2 dist = mTarget.transform.position - transform.position;
-        Debug.Log(dist.sqrMagnitude);
         if (dist.sqrMagnitude < kMovePerceptionThreshold)
         {
             AttackTarget(mTarget);
@@ -102,7 +102,7 @@ public class EnemyController : UnitController
 
     private void AttackTarget(GameObject target)
     {
-        if (mLastAttack + kAttackCooldown < Time.time)
+        if (mLastMeleeAttack + kMeleeCooldown < Time.time)
         {
             PerceptionController pc = target.GetComponent<PerceptionController>();
             if (pc != null)
@@ -113,7 +113,7 @@ public class EnemyController : UnitController
                     uc.TakeDamage(mAttackDamage);
                 }
             }
-            mLastAttack = Time.time;
+            mLastMeleeAttack = Time.time;
         }
     }
 

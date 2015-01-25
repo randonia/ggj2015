@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerController : UnitController
@@ -34,12 +33,68 @@ public class PlayerController : UnitController
     public int AttackModeIndex { get { return (int)mAttackMode; } }
 
     private PerceptionController[] mPerceptions;
+    private const int kRangedDamage = 2;
+    private const int kRangedStamina = 3;
+    private const int kMagicMana = 4;
+
+    private new const float kMeleeCooldown = 1.0f;
+    private new const float kRangeCooldown = 3.0f;
+    private new const float kMagicCooldown = 2.0f;
+    // Per step regen
+
+    #region Step based regen
+
+    private int mHealSteps;
+    private int mManaSteps;
+    private int mStamSteps;
+
+    private void HealStep()
+    {
+        mHealSteps++;
+        if (mHealSteps >= kHealReqSteps)
+        {
+            mHealSteps = 0;
+            mHealth = Math.Min(kMaxHealth, mHealth + kHealStepRegen);
+        }
+    }
+
+    private void ManaStep()
+    {
+        mManaSteps++;
+        if (mManaSteps >= kManaReqSteps)
+        {
+            mManaSteps = 0;
+            mMana = Math.Min(kMaxMana, mMana + kManaStepRegen);
+        }
+    }
+
+    private void StamStep()
+    {
+        mStamSteps++;
+        if (mStamSteps >= kStamReqSteps)
+        {
+            mStamSteps = 0;
+            mStamina = Math.Min(kMaxStamina, mStamina + kStamStepRegen);
+        }
+    }
+
+    private const int kHealReqSteps = 5; // 1hp per 5steps
+    private const int kHealStepRegen = 1;
+
+    private const int kManaStepRegen = 1; // 1 mana per 2 steps
+    private const int kManaReqSteps = 2;
+
+    private const int kStamStepRegen = 1; // 1 stam per 3 steps
+    private const int kStamReqSteps = 3;
+
+    #endregion Step based regen
 
     #endregion Combat Properties
 
     // Use this for initialization
     private void Start()
     {
+        mTeam = UnitTeam.Player;
         mHealth = kMaxHealth;
         mMana = kMaxMana;
         mStamina = kMaxStamina;
@@ -62,36 +117,96 @@ public class PlayerController : UnitController
 
     private void DoAttack()
     {
-        GameObject target = null;
-        if (mLastAttack + kAttackCooldown < Time.time)
+        Vector2 attackDir = Vector2.zero;
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            Vector2 attackDir = Vector2.zero;
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                target = mPerceptions[NORTH].CurrentTarget;
-                attackDir.Set(0, -1);
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                target = mPerceptions[SOUTH].CurrentTarget;
-                attackDir.Set(0, 1);
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            attackDir.Set(0, 1);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            attackDir.Set(0, -1);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            attackDir.Set(1, 0);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            attackDir.Set(-1, 0);
+        }
+        if (attackDir == Vector2.zero)
+        {
+            return;
+        }
+        switch (mAttackMode)
+        {
+            case AttackMode.Melee:
+                AttackMelee(attackDir);
+                break;
+            case AttackMode.Range:
+                AttackRanged(attackDir);
+                break;
+            case AttackMode.Magic:
+                AttackMagic(attackDir);
+                break;
+        }
+    }
+
+    #region Special Attack Methods
+
+    private void AttackMelee(Vector2 attackDir)
+    {
+        if (attackDir != Vector2.zero && mLastMeleeAttack + kMeleeCooldown <= Time.time)
+        {
+            GameObject target = null;
+
+            if (attackDir.x == 1)
             {
                 target = mPerceptions[EAST].CurrentTarget;
-                attackDir.Set(1, 0);
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (attackDir.x == -1)
             {
                 target = mPerceptions[WEST].CurrentTarget;
-                attackDir.Set(-1, 0);
             }
+            if (attackDir.y == 1)
+            {
+                target = mPerceptions[NORTH].CurrentTarget;
+            }
+            if (attackDir.y == -1)
+            {
+                target = mPerceptions[SOUTH].CurrentTarget;
+            }
+
             if (target != null)
             {
+                // Do the attack
                 Debug.DrawLine(transform.position, target.transform.position, Color.red);
+                mLastMeleeAttack = Time.time;
             }
         }
     }
+
+    private void AttackRanged(Vector2 attackDir)
+    {
+        if (attackDir != Vector2.zero &&
+            mStamina >= kRangedStamina &&
+            mLastRangedAttack + kRangeCooldown <= Time.time)
+        {
+            FireArrow(attackDir, kRangedDamage);
+            mStamina -= kRangedStamina;
+        }
+    }
+
+    private void AttackMagic(Vector2 attackDir)
+    {
+        if (attackDir != Vector2.zero &&
+            mMana >= kMagicMana &&
+            mLastMagicAttack + kMagicCooldown <= Time.time)
+        {
+        }
+    }
+
+    #endregion Special Attack Methods
 
     private void DoAttackModeInput()
     {
@@ -134,6 +249,13 @@ public class PlayerController : UnitController
                 return;
             }
         }
+    }
+
+    protected override void RefreshStats()
+    {
+        HealStep();
+        ManaStep();
+        StamStep();
     }
 
     #endregion StateUpdate methods

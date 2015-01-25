@@ -9,6 +9,13 @@ public class UnitController : MonoBehaviour
     public const int EAST = 2;
     public const int WEST = 3;
 
+    public enum UnitTeam
+    {
+        Neutral,
+        Player,
+        Enemy
+    }
+
     protected enum UnitState
     {
         Idle,
@@ -19,15 +26,24 @@ public class UnitController : MonoBehaviour
     }
 
     public GameObject GO_Perception;
+    public GameObject PREFAB_Arrow;
     public GameObject[] GO_Combat;
 
     public float mMoveTweenDuration = 0.25f;
     protected bool mMoving = false;
 
     protected UnitState mState = UnitState.Idle;
+    protected UnitTeam mTeam = UnitTeam.Neutral;
 
-    protected const float kAttackCooldown = 1.5f;
-    protected float mLastAttack;
+    public UnitTeam Team { get { return mTeam; } }
+
+    protected const float kMeleeCooldown = 1.0f;
+    protected const float kRangeCooldown = 3.0f;
+    protected const float kMagicCooldown = 2.0f;
+
+    protected float mLastMeleeAttack = float.MinValue;
+    protected float mLastRangedAttack = float.MinValue;
+    protected float mLastMagicAttack = float.MinValue;
 
     protected const int kMaxHealth = 10;
     protected int mHealth = kMaxHealth;
@@ -79,6 +95,15 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    protected void FireArrow(Vector2 dir, int damage)
+    {
+        GameObject arrow = (GameObject)GameObject.Instantiate(PREFAB_Arrow,
+            gameObject.transform.position, Quaternion.identity);
+        arrow.GetComponent<ProjectileController>().Direction = dir;
+        arrow.GetComponent<ProjectileController>().Damage = damage;
+        mLastRangedAttack = Time.time;
+    }
+
     public void TakeDamage(int damage)
     {
         mHealth -= damage;
@@ -92,5 +117,10 @@ public class UnitController : MonoBehaviour
     private void ClearMoveFlag()
     {
         mMoving = false;
+        RefreshStats();
+    }
+
+    protected virtual void RefreshStats()
+    {
     }
 }
