@@ -116,7 +116,7 @@ MonoBehaviour:
   mMoveTweenDuration: .5
   mTeam: 2
   mAttackDamage: 1
-  kMovePerceptionThreshold: 3
+  kMovePerceptionThreshold: 9
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
