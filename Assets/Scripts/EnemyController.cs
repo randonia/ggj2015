@@ -18,7 +18,7 @@ public class EnemyController : UnitController
     public float kMovePerceptionThreshold = 1.5f;
 
     // Use this for initialization
-    protected void Start()
+    new void Start()
     {
         base.Start();
         mTeam = UnitTeam.Enemy;

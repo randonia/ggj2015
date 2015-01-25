@@ -10,6 +10,8 @@ public class PlayerController : UnitController
         Magic = 2
     }
 
+    private const float kTimeScale = 1;
+
     #region Combat Properties
 
     private const float kAttackCooldown = 0.25f;
@@ -38,6 +40,10 @@ public class PlayerController : UnitController
     private new const float kRangeCooldown = 3.0f;
     private new const float kMagicCooldown = 2.0f;
     // Per step regen
+
+    public bool isPaused = false;
+
+    public bool isRunning { get { return !isPaused; } }
 
     #region Step based regen
 
@@ -98,16 +104,18 @@ public class PlayerController : UnitController
     private const int kNumInro = 3;
     private const Single UI_MissingInroAlpha = 0.2f;
 
-    public Single Inro0_UI_Color { get { return (mInroRecovered[0]) ? 1 : UI_MissingInroAlpha; } }
+    public Single Inro0_UI_Color { get { return mInroRecovered != null && (mInroRecovered[0]) ? 1 : UI_MissingInroAlpha; } }
 
-    public Single Inro1_UI_Color { get { return (mInroRecovered[1]) ? 1 : UI_MissingInroAlpha; } }
+    public Single Inro1_UI_Color { get { return mInroRecovered != null && (mInroRecovered[1]) ? 1 : UI_MissingInroAlpha; } }
 
-    public Single Inro2_UI_Color { get { return (mInroRecovered[2]) ? 1 : UI_MissingInroAlpha; } }
+    public Single Inro2_UI_Color { get { return mInroRecovered != null && (mInroRecovered[2]) ? 1 : UI_MissingInroAlpha; } }
+
+    public Single Pause_UI_Alpha { get { return (isPaused) ? 1 : 0; } }
 
     #endregion Rendering Properties
 
     // Use this for initialization
-    private void Start()
+    new void Start()
     {
         base.Start();
         mTeam = UnitTeam.Player;
@@ -122,7 +130,7 @@ public class PlayerController : UnitController
     }
 
     // Update is called once per frame
-    private void Update()
+    void Update()
     {
         switch (mState)
         {
@@ -311,4 +319,10 @@ public class PlayerController : UnitController
     }
 
     #endregion StateUpdate methods
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = (isPaused) ? 0 : kTimeScale;
+    }
 }
