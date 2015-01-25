@@ -10,14 +10,6 @@ public class PlayerController : UnitController
         Magic = 2
     }
 
-    #region Consts
-
-    private new const int kMaxHealth = 10;
-    private const int kMaxMana = 10;
-    private const int kMaxStamina = 10;
-
-    #endregion Consts
-
     #region Combat Properties
 
     private const float kAttackCooldown = 0.25f;
@@ -33,6 +25,9 @@ public class PlayerController : UnitController
     public int AttackModeIndex { get { return (int)mAttackMode; } }
 
     private PerceptionController[] mPerceptions;
+    private new const int kMaxHealth = 10;
+    private const int kMaxMana = 10;
+    private const int kMaxStamina = 10;
     private const int kMeleeDamage = 1;
     private const int kRangedDamage = 2;
     private const int kMagicDamage = 5;
@@ -99,6 +94,16 @@ public class PlayerController : UnitController
 
     public Sprite ActivePlayerSprite { get { return PlayerSprites[(int)mAttackMode]; } }
 
+    private bool[] mInroRecovered = new bool[3] { false, false, false };
+    private const int kNumInro = 3;
+    private const Single UI_MissingInroAlpha = 0.2f;
+
+    public Single Inro0_UI_Color { get { return (mInroRecovered[0]) ? 1 : UI_MissingInroAlpha; } }
+
+    public Single Inro1_UI_Color { get { return (mInroRecovered[1]) ? 1 : UI_MissingInroAlpha; } }
+
+    public Single Inro2_UI_Color { get { return (mInroRecovered[2]) ? 1 : UI_MissingInroAlpha; } }
+
     #endregion Rendering Properties
 
     // Use this for initialization
@@ -124,43 +129,6 @@ public class PlayerController : UnitController
     }
 
     #region StateUpdate methods
-
-    private void DoAttack()
-    {
-        Vector2 attackDir = Vector2.zero;
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            attackDir.Set(0, 1);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            attackDir.Set(0, -1);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            attackDir.Set(1, 0);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            attackDir.Set(-1, 0);
-        }
-        if (attackDir == Vector2.zero)
-        {
-            return;
-        }
-        switch (mAttackMode)
-        {
-            case AttackMode.Melee:
-                AttackMelee(attackDir);
-                break;
-            case AttackMode.Range:
-                AttackRanged(attackDir);
-                break;
-            case AttackMode.Magic:
-                AttackMagic(attackDir);
-                break;
-        }
-    }
 
     #region Special Attack Methods
 
@@ -221,6 +189,8 @@ public class PlayerController : UnitController
 
     #endregion Special Attack Methods
 
+    #region State-based methods
+
     private void DoAttackModeInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -261,6 +231,56 @@ public class PlayerController : UnitController
                 MoveTo(0, -1);
                 return;
             }
+        }
+    }
+
+    private void DoAttack()
+    {
+        Vector2 attackDir = Vector2.zero;
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            attackDir.Set(0, 1);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            attackDir.Set(0, -1);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            attackDir.Set(1, 0);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            attackDir.Set(-1, 0);
+        }
+        if (attackDir == Vector2.zero)
+        {
+            return;
+        }
+        switch (mAttackMode)
+        {
+            case AttackMode.Melee:
+                AttackMelee(attackDir);
+                break;
+            case AttackMode.Range:
+                AttackRanged(attackDir);
+                break;
+            case AttackMode.Magic:
+                AttackMagic(attackDir);
+                break;
+        }
+    }
+
+    #endregion State-based methods
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag.Equals("Inro"))
+        {
+            string inroName = other.gameObject.name;
+            int inro_Id = int.Parse(inroName.Substring(inroName.IndexOf("_") + 1));
+            mInroRecovered[inro_Id] = true;
+            GameObject.Destroy(other.gameObject);
         }
     }
 
