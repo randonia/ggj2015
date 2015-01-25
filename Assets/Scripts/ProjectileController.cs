@@ -40,7 +40,7 @@ public class ProjectileController : MonoBehaviour
         UnitController uc = other.gameObject.GetComponent<UnitController>();
         if (uc != null && !uc.Team.Equals(Team))
         {
-            uc.TakeDamage(Damage);
+            uc.TakeDamage(Damage, EffectsController.EffectType.EffectRanged);
             GameObject.Destroy(gameObject);
         }
     }

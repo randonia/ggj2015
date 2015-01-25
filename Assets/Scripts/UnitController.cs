@@ -33,6 +33,7 @@ public class UnitController : MonoBehaviour
         Dead
     }
 
+    public GameObject GO_EffectSystem;
     public GameObject GO_Perception;
     public GameObject PREFAB_Arrow;
     public GameObject PREFAB_Magic;
@@ -45,6 +46,8 @@ public class UnitController : MonoBehaviour
     public UnitTeam mTeam = UnitTeam.Neutral;
 
     public UnitTeam Team { get { return mTeam; } }
+
+    private EffectsController mEffectController;
 
     protected const float kMeleeCooldown = 1.0f;
     protected const float kRangeCooldown = 3.0f;
@@ -63,9 +66,13 @@ public class UnitController : MonoBehaviour
     }
 
     // Use this for initialization
-    private void Start()
+    protected void Start()
     {
         mHealth = kMaxHealth;
+        if (GO_EffectSystem != null)
+        {
+            mEffectController = GO_EffectSystem.GetComponent<EffectsController>();
+        }
     }
 
     // Update is called once per frame
@@ -135,9 +142,23 @@ public class UnitController : MonoBehaviour
         return magicMissile;
     }
 
+    public void TakeDamage(int damage, EffectsController.EffectType effectType)
+    {
+        if (mEffectController != null)
+        {
+            mEffectController.EmitEffect(effectType);
+        }
+        TakeDamage(damage);
+    }
+
     public void TakeDamage(int damage)
     {
         mHealth -= damage;
+        EnemyController ec = null;
+        if (ec = GetComponent<EnemyController>())
+        {
+            ec.SetAggroOnPlayer();
+        }
         if (mHealth <= 0)
         {
             // Die

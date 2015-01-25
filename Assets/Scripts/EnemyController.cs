@@ -20,6 +20,7 @@ public class EnemyController : UnitController
     // Use this for initialization
     protected void Start()
     {
+        base.Start();
         mTeam = UnitTeam.Enemy;
         PerceptionController pc = GO_Perception.GetComponent<PerceptionController>();
         pc.mPerceptionEnterCallback = PerceptionEnter;
@@ -107,7 +108,7 @@ public class EnemyController : UnitController
                 UnitController uc = pc.Parent.GetComponent<UnitController>();
                 if (uc != null)
                 {
-                    uc.TakeDamage(mAttackDamage);
+                    uc.TakeDamage(mAttackDamage, EffectsController.EffectType.EffectMelee);
                 }
             }
             mLastMeleeAttack = Time.time;
@@ -141,6 +142,17 @@ public class EnemyController : UnitController
             mState.Equals(UnitState.Moving))
         {
             mState = UnitState.Idle;
+        }
+    }
+
+    internal void SetAggroOnPlayer()
+    {
+        if (mState.Equals(UnitState.Idle) || mState.Equals(UnitState.Attacking) ||
+            mState.Equals(UnitState.Moving))
+        {
+            CancelInvoke("ClearFollowing");
+            mTarget = GameObject.Find("player_perception");
+            mState = UnitState.Attacking;
         }
     }
 }

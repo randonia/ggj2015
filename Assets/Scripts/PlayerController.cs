@@ -109,6 +109,7 @@ public class PlayerController : UnitController
     // Use this for initialization
     private void Start()
     {
+        base.Start();
         mTeam = UnitTeam.Player;
         mHealth = kMaxHealth;
         mMana = kMaxMana;
@@ -167,8 +168,12 @@ public class PlayerController : UnitController
             {
                 // Do the attack
                 Debug.DrawLine(transform.position, target.transform.position, Color.red, 0.5f);
-                target.GetComponent<UnitController>().TakeDamage(kMeleeDamage);
-                mLastMeleeAttack = Time.time;
+                UnitController uc = target.GetComponent<UnitController>();
+                if (uc != null)
+                {
+                    uc.TakeDamage(kMeleeDamage, EffectsController.EffectType.EffectMelee);
+                    mLastMeleeAttack = Time.time;
+                }
             }
         }
     }
@@ -291,6 +296,10 @@ public class PlayerController : UnitController
             mInroRecovered[inro_Id] = true;
             GameObject.Destroy(other.gameObject);
         }
+        if (other.tag.Equals("Portal"))
+        {
+            other.GetComponent<EffectsController>().EmitEffect(EffectsController.EffectType.Portal);
+        }
     }
 
     protected override void RefreshStats()
@@ -298,6 +307,7 @@ public class PlayerController : UnitController
         HealStep();
         ManaStep();
         StamStep();
+        mLastMeleeAttack = float.MinValue;
     }
 
     #endregion StateUpdate methods
