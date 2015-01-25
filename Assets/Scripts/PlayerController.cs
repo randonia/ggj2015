@@ -243,34 +243,22 @@ public class PlayerController : UnitController
         {
             if (Input.GetKey(KeyCode.A))
             {
-                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, WEST))
-                {
-                    MoveTo(-1, 0);
-                }
+                MoveTo(-1, 0);
                 return;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, EAST))
-                {
-                    MoveTo(1, 0);
-                }
+                MoveTo(1, 0);
                 return;
             }
             if (Input.GetKey(KeyCode.W))
             {
-                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, NORTH))
-                {
-                    MoveTo(0, 1);
-                }
+                MoveTo(0, 1);
                 return;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                if (WorldController.CanMove((int)transform.position.x, (int)transform.position.y, SOUTH))
-                {
-                    MoveTo(0, -1);
-                }
+                MoveTo(0, -1);
                 return;
             }
         }

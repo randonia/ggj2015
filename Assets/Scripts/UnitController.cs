@@ -80,7 +80,7 @@ public class UnitController : MonoBehaviour
 
     protected void MoveTo(int xDir, int yDir)
     {
-        if (!mMoving)
+        if (CanMove(xDir, yDir))
         {
             mMoving = true;
             iTween.MoveTo(gameObject, iTween.Hash(
@@ -91,6 +91,16 @@ public class UnitController : MonoBehaviour
                 "easetype", "linear")
                 );
         }
+    }
+
+    private bool CanMove(int xDir, int yDir)
+    {
+        if (mMoving)
+        {
+            return false;
+        }
+        int cardinal = ((xDir == 1) ? EAST : (xDir == -1) ? WEST : (yDir == 1) ? NORTH : (yDir == -1) ? SOUTH : 0);
+        return WorldController.CanMove((int)transform.position.x, (int)transform.position.y, cardinal);
     }
 
     protected void MoveTo(Vector2 dir)
