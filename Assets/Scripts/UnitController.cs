@@ -24,14 +24,17 @@ public class UnitController : MonoBehaviour
         Enemy
     }
 
-    protected enum UnitState
+    public enum UnitState
     {
         Idle,
         Moving,
         Attacking,
         Dieing,
-        Dead
+        Dead,
+        Menu
     }
+
+    public UnitState State { get { return mState; } set { mState = value; } }
 
     public GameObject GO_EffectSystem;
     public GameObject GO_Perception;

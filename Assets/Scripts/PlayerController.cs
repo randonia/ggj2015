@@ -43,7 +43,13 @@ public class PlayerController : UnitController
 
     public bool isPaused = false;
 
-    public bool isRunning { get { return !isPaused; } }
+    public bool isRunning { get { return !isPaused && mState != UnitState.Dead; } }
+
+    public bool isMainMenu { get { return mState == UnitState.Menu; } }
+
+    public bool isGameplay { get { return mState != UnitState.Menu; } }
+
+    public bool isDead { get { return mState == UnitState.Dead; } }
 
     #region Step based regen
 
@@ -110,8 +116,6 @@ public class PlayerController : UnitController
 
     public Single Inro2_UI_Color { get { return mInroRecovered != null && (mInroRecovered[2]) ? 1 : UI_MissingInroAlpha; } }
 
-    public Single Pause_UI_Alpha { get { return (isPaused) ? 1 : 0; } }
-
     #endregion Rendering Properties
 
     // Use this for initialization
@@ -119,6 +123,7 @@ public class PlayerController : UnitController
     {
         base.Start();
         mTeam = UnitTeam.Player;
+        mState = UnitState.Menu;
         mHealth = kMaxHealth;
         mMana = kMaxMana;
         mStamina = kMaxStamina;
@@ -140,7 +145,7 @@ public class PlayerController : UnitController
                 DoAttack();
                 break;
             case UnitState.Dieing:
-                // Do death
+                DoDeath();
                 break;
         }
     }
@@ -293,6 +298,17 @@ public class PlayerController : UnitController
         }
     }
 
+    protected override void DoDeath()
+    {
+        Debug.Log("Player died");
+        mState = UnitState.Dead;
+        // Hackey disabling of everyone
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            enemy.GetComponent<UnitController>().State = UnitState.Menu;
+        }
+    }
+
     #endregion State-based methods
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -324,5 +340,15 @@ public class PlayerController : UnitController
     {
         isPaused = !isPaused;
         Time.timeScale = (isPaused) ? 0 : kTimeScale;
+    }
+
+    public void StartGame()
+    {
+        mState = UnitState.Idle;
+    }
+
+    public void RestartGame()
+    {
+        Application.LoadLevel(Application.loadedLevelName);
     }
 }
