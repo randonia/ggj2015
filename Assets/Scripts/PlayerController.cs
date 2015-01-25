@@ -33,12 +33,13 @@ public class PlayerController : UnitController
     public int AttackModeIndex { get { return (int)mAttackMode; } }
 
     private PerceptionController[] mPerceptions;
+    private const int kMeleeDamage = 1;
     private const int kRangedDamage = 2;
     private const int kMagicDamage = 5;
     private const int kRangedStamina = 3;
     private const int kMagicMana = 4;
 
-    private new const float kMeleeCooldown = 1.0f;
+    private new const float kMeleeCooldown = 0.5f;
     private new const float kRangeCooldown = 3.0f;
     private new const float kMagicCooldown = 2.0f;
     // Per step regen
@@ -181,7 +182,8 @@ public class PlayerController : UnitController
             if (target != null)
             {
                 // Do the attack
-                Debug.DrawLine(transform.position, target.transform.position, Color.red);
+                Debug.DrawLine(transform.position, target.transform.position, Color.red, 0.5f);
+                target.GetComponent<UnitController>().TakeDamage(kMeleeDamage);
                 mLastMeleeAttack = Time.time;
             }
         }

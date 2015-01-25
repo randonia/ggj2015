@@ -34,17 +34,14 @@ public class EnemyController : UnitController
             case UnitState.Attacking:
                 DoAttack();
                 break;
-
             case UnitState.Dead:
                 break;
-
             case UnitState.Dieing:
+                DoDeath();
                 break;
-
             case UnitState.Idle:
                 DoIdle();
                 break;
-
             case UnitState.Moving:
                 break;
         }

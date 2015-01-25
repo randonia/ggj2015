@@ -63,14 +63,11 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (mHealth <= 0)
-        {
-            DoDeath();
-        }
     }
 
-    private void DoDeath()
+    protected virtual void DoDeath()
     {
+        GameObject.Destroy(gameObject);
     }
 
     protected void MoveTo(int xDir, int yDir)
