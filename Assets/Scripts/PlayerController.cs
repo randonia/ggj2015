@@ -123,9 +123,17 @@ public class PlayerController : UnitController
     // Update is called once per frame
     private void Update()
     {
-        DoMovement();
-        DoAttackModeInput();
-        DoAttack();
+        switch (mState)
+        {
+            case UnitState.Idle:
+                DoMovement();
+                DoAttackModeInput();
+                DoAttack();
+                break;
+            case UnitState.Dieing:
+                // Do death
+                break;
+        }
     }
 
     #region StateUpdate methods
