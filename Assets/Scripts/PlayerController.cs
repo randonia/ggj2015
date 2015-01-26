@@ -36,7 +36,7 @@ public class PlayerController : UnitController
     private const int kRangedStamina = 3;
     private const int kMagicMana = 4;
 
-    private new const float kMeleeCooldown = 0.2f;
+    private new const float kMeleeCooldown = 0.35f;
     private new const float kRangeCooldown = 2.0f;
     private new const float kMagicCooldown = 5.0f;
 

@@ -695,7 +695,7 @@ MonoBehaviour:
   - {fileID: 100008}
   - {fileID: 100006}
   - {fileID: 100004}
-  mMoveTweenDuration: .349999994
+  mMoveTweenDuration: .5
   mTeam: 0
   isPaused: 0
   PlayerSprites:
