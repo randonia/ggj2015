@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
@@ -64,6 +65,8 @@ public class UnitController : MonoBehaviour
     protected const int kMaxHealth = 10;
     protected int mHealth = kMaxHealth;
 
+    private Dictionary<string, AudioSource> mAudioClips;
+
     public Single Health
     {
         get { return (Single)mHealth / kMaxHealth; }
@@ -76,6 +79,11 @@ public class UnitController : MonoBehaviour
         if (GO_EffectSystem != null)
         {
             mEffectController = GO_EffectSystem.GetComponent<EffectsController>();
+        }
+        mAudioClips = new Dictionary<string, AudioSource>();
+        foreach (AudioSource clip in GetComponents<AudioSource>())
+        {
+            mAudioClips.Add(clip.clip.name, clip);
         }
     }
 
@@ -132,6 +140,10 @@ public class UnitController : MonoBehaviour
         arrow.GetComponent<ProjectileController>().Damage = damage;
         arrow.GetComponent<ProjectileController>().Team = mTeam;
         mLastRangedAttack = Time.time;
+        if (mAudioClips != null)
+        {
+            mAudioClips["bow_fire"].Play();
+        }
         return arrow;
     }
 
@@ -143,6 +155,10 @@ public class UnitController : MonoBehaviour
         magicMissile.GetComponent<ProjectileController>().Damage = damage;
         magicMissile.GetComponent<ProjectileController>().Team = mTeam;
         mLastMagicAttack = Time.time;
+        if (mAudioClips != null)
+        {
+            mAudioClips["magic_fire"].Play();
+        }
         return magicMissile;
     }
 
@@ -151,6 +167,18 @@ public class UnitController : MonoBehaviour
         if (mEffectController != null)
         {
             mEffectController.EmitEffect(effectType);
+        }
+        if (mAudioClips != null)
+        {
+            switch (effectType)
+            {
+                case EffectsController.EffectType.EffectMelee:
+                    mAudioClips["katana_slash"].Play();
+                    break;
+                case EffectsController.EffectType.EffectRanged:
+                    mAudioClips["bow_hit"].Play();
+                    break;
+            }
         }
         TakeDamage(damage);
     }
